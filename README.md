@@ -17,7 +17,7 @@ You can find our Contributing guidelines [here](https://github.com/5tupidbrain/C
 
 ## License 📝 
 
-This project follows the [MIT License](https://choosealicense.com/licenses/MIT      /).
+This project follows the [MIT License](https://choosealicense.com/licenses/MIT).
 
 <br>
 <br>
