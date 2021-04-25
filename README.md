@@ -1,4 +1,4 @@
-# 💻 An Open Source website where you can search for COVID19 resources in your city 🏙.
+# 💻 An Open Source website where you can search for COVID19 resources in your city 🏙 using Social Media.
 
 
 ![GitHub forks](https://img.shields.io/github/forks/5tupidbrain/Covid19-avail) 
