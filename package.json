@@ -1,5 +1,5 @@
 {
-  "name": "covid19avail",
+  "name": "covid19-avail",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -25,5 +25,24 @@
     "eslint-plugin-vue": "^7.0.0",
     "node-sass": "^4.12.0",
     "sass-loader": "^8.0.2"
-  }
+  },
+  "description": "Twitter Search for COVID19 resources in your city.",
+  "main": ".eslintrc.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/5tupidbrain/Covid19-avail.git"
+  },
+  "author": "5tupidbrain",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/5tupidbrain/Covid19-avail/issues"
+  },
+  "homepage": "https://github.com/5tupidbrain/Covid19-avail#readme",
+  "keywords": [
+    "covid19",
+    "covid",
+    "corona",
+    "covid19 resources",
+    "covid19 search"
+  ]
 }
