@@ -4,7 +4,10 @@
     <a href="">👩‍💻Source code</a>
   </div>
   <footer class="flex-center">
-    <p>Made by <a href="https://github.com/5tupidbrain">5tuidBrain</a></p>
+    <p>Made by <a href="https://github.com/5tupidbrain">5tupidBrain</a></p>
+    <a href="https://github.com/5tupidbrain/Covid19-avail"
+      ><img src="@/assets/img/github-logo.svg" alt=""
+    /></a>
   </footer>
 </template>
 
@@ -12,6 +15,7 @@
 footer {
   background: #262628;
   padding: 18px;
+  font-size: 14px;
   flex-direction: row;
   font-family: "Roboto Mono", monospace;
   justify-content: space-between;
@@ -22,6 +26,11 @@ footer {
 
   p a {
     color: $primary;
+  }
+
+  img {
+    height:24px;
+    filter: invert(1);
   }
 }
 .toast-warning {

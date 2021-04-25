@@ -5,63 +5,75 @@
       authenticity.
       <hr />
       Check for replies under the tweets.
-      <!-- <br />
-      Make sure search results are sorted by "Latest". -->
     </div>
+
     <section>
-      <h1>Search</h1>
-      <p>Enter <b>city</b> name:</p>
-      <input type="text" name="cityname" id="city-name" />
-      <div class="checkBoxs">
-        <div v-for="(item, key, index) in checkBox" :key="index">
-          <input
-            class="styled-checkbox"
-            :id="`checkbox-${index}`"
-            type="checkbox"
-            v-model="item.checked"
-            name="alsoSearchfor"
-          />
-          <label :for="`checkbox-${index}`">{{ key }}</label>
+      <h4>Search for COVID19 resources in your city 🏙 using Social Media.</h4>
+
+      <div class="search-container">
+        <h1>Search</h1>
+        <p>Enter <b>city</b> name:</p>
+        <input
+          type="text"
+          @keyup.enter="search"
+          name="cityname"
+          id="city-name"
+        />
+
+        <div class="checkBoxs">
+          <div v-for="(item, key, index) in checkBox" :key="index">
+            <input
+              class="styled-checkbox"
+              :id="`checkbox-${index}`"
+              type="checkbox"
+              v-model="item.checked"
+              name="alsoSearchfor"
+            />
+            <label :for="`checkbox-${index}`">{{ key }}</label>
+          </div>
         </div>
-      </div>
-      <!-- <div class="otherInput">
+        <!-- <div class="otherInput">
         <label for="other">Other: </label>
         <input type="text" name="other" id="other" />
       </div> -->
-      <button class="flex-center" v-on:click="search">Search</button>
+        <button class="flex-center" v-on:click="search">Search</button>
+      </div>
 
       <hr />
 
-      <h4>Tweets should NOT have these words(needed,required):</h4>
-      <div class="checkBoxs ochk">
-        <div v-for="(item, key, index) in excludeKeywords" :key="index">
-          <input
-            :id="`exclude-${index}`"
-            type="checkbox"
-            v-model="item.checked"
-            name="alsoSearchfor"
-          />
-          <label :for="`exclude-${index}`">{{ key }}</label>
+      <div class="extraOptions">
+        <h4>Tweets should NOT have these words(needed,required):</h4>
+        <div class="checkBoxs ochk">
+          <div v-for="(item, key, index) in excludeKeywords" :key="index">
+            <input
+              :id="`exclude-${index}`"
+              type="checkbox"
+              v-model="item.checked"
+              name="alsoSearchfor"
+            />
+            <label :for="`exclude-${index}`">{{ key }}</label>
+          </div>
         </div>
-      </div>
-
-      <!-- <div class="otherInput">
+        <!-- <div class="otherInput">
         <label for="other">Other: </label>
         <input type="text" name="other" id="other" />
       </div> -->
-      <hr />
-      <div class="checkBoxs ochk">
-        <div v-for="(item, key, index) in includeKeywords" :key="index">
-          <input
-            :id="`include-${index}`"
-            type="checkbox"
-            v-model="item.checked"
-            name="alsoSearchfor"
-          />
-          <label :for="`include-${index}`">{{ item.title }}</label>
+
+        <hr />
+
+        <div class="checkBoxs ochk">
+          <div v-for="(item, key, index) in includeKeywords" :key="index">
+            <input
+              :id="`include-${index}`"
+              type="checkbox"
+              v-model="item.checked"
+              name="alsoSearchfor"
+            />
+            <label :for="`include-${index}`">{{ item.title }}</label>
+          </div>
         </div>
+        <p>* Uncheck "show verified" for <b>smaller cities</b></p>
       </div>
-      <p>* Uncheck "show verified" for <b>smaller cities</b></p>
     </section>
   </div>
 </template>
@@ -74,6 +86,7 @@ export default {
   name: "Home",
   setup() {
     let REDIRECT_URL = ref("");
+
     let checkBox = {
       Beds: {
         keywords: ["bed", "beds"],
@@ -150,7 +163,7 @@ export default {
     };
 
     function alsoKeywords() {
-      let keyw = [];
+      let searchKeywords = [];
       let keye = [];
 
       if (includeKeywords.unverified.checked) {
@@ -159,12 +172,15 @@ export default {
           keye.push(element);
         });
       }
-      // verified%20Jabalpur%20(bed%20OR%20beds%20OR%20icu%20OR%20oxygen%20OR%20ventilator%20OR%20ventilators)%20-%22not%20verified%22%20-%22unverified%22%20-%22needed%22%20-%22need%22%20-%22needs%22%20-%22required%22%20-%22require%22%20-%22requires%22%20-%22requirement%22%20-%22requirements%22&f=live
+
+      // Keywords for requirements/Resources
       Object.values(checkBox).map((ele) => {
         if (ele.checked) {
-          keyw.push(`${ele.keywords.join("+OR+")}`);
+          searchKeywords.push(`${ele.keywords.join("+OR+")}`);
         }
       });
+
+      // Excluded Keywords (needed/required)
       Object.values(excludeKeywords).map((ele) => {
         if (ele.checked) {
           ele.keywords.forEach((element) => {
@@ -172,18 +188,22 @@ export default {
           });
         }
       });
+      // Mapping keywords in proper format for url for eg: ` -"KEYWORD" `
       keye = keye.map((k) => `-"${k}"`).join("+");
 
-      return `(${keyw.join("+OR+")})+${keye}&f=live`;
+      return `(${searchKeywords.join("+OR+")})+${keye}&f=live`;
     }
 
     function search() {
       let cityName = document.getElementById("city-name").value;
+
       if (cityName.length !== 0) {
         let BASE_URL = "https://twitter.com/search?q=";
         let keywords = alsoKeywords();
         let isVerified = ref("");
         let query = ref("");
+
+        // Include Verifed keyword
         if (includeKeywords.verified.checked) {
           isVerified.value = includeKeywords.verified.keywords;
           query.value = `${isVerified.value}+${cityName}+${keywords}`;
@@ -192,8 +212,11 @@ export default {
         }
 
         REDIRECT_URL.value = `${BASE_URL}${query.value}`;
+
+        // Open url in different tab
         window.open(REDIRECT_URL.value, "_blank");
       } else {
+        //If cityName Input is empty
         alert("Enter  city name");
       }
     }
@@ -231,10 +254,10 @@ hr {
   font-weight: bold;
   background: rgba($primary, 0.5);
   font-family: "Roboto Mono", monospace;
-}
-.toast-warning hr {
-  background: rgba(0, 0, 0, 0.12);
-  margin: 10px 0;
+  hr {
+    background: rgba(0, 0, 0, 0.12);
+    margin: 10px 0;
+  }
 }
 section {
   margin: 12px;
@@ -267,7 +290,7 @@ section {
     font-family: sans-serif;
     font-size: 15px;
     border-radius: 4px;
-    padding: 10px 18px;
+    padding: 10px 12px;
   }
   button {
     display: flex;
@@ -291,7 +314,7 @@ section {
     box-shadow: 2px 5px 10px #e4e4e4;
 
     &:hover {
-      opacity: 0.85;
+      opacity: 0.75;
     }
 
     &:active {
