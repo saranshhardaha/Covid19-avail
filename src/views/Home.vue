@@ -9,7 +9,46 @@
 
     <section>
       <h4>Search for COVID19 resources in your city 🏙 using Social Media.</h4>
-
+      <div class="covid-stats">
+        <div class="card flex-center">
+          <div class="card-top flex-allcenter">
+            <h4>India</h4>
+            <div class="global-count">
+              <p>
+                Global count:
+                <b>{{ covidstats.Global.TotalConfirmed.toLocaleString() }}</b>
+              </p>
+            </div>
+            <!-- <button> ></button> -->
+          </div>
+          <div class="card-info">
+            <p>
+              TotalConfirmed:
+              <b>{{ covidstats.India.TotalConfirmed.toLocaleString() }}</b>
+            </p>
+            <p>
+              NewConfirmed:
+              <b>{{ covidstats.India.NewConfirmed.toLocaleString() }}</b>
+            </p>
+            <p>
+              TotalRecovered:
+              <b>{{ covidstats.India.TotalRecovered.toLocaleString() }}</b>
+            </p>
+            <p>
+              NewRecovered:
+              <b>{{ covidstats.India.NewRecovered.toLocaleString() }}</b>
+            </p>
+            <p>
+              TotalDeaths:
+              <b>{{ covidstats.India.TotalDeaths.toLocaleString() }}</b>
+            </p>
+            <p>
+              NewDeaths:
+              <b>{{ covidstats.India.NewDeaths.toLocaleString() }}</b>
+            </p>
+          </div>
+        </div>
+      </div>
       <div class="search-container">
         <h1>Search</h1>
         <p>Enter <b>city</b> name:</p>
@@ -36,7 +75,23 @@
         <label for="other">Other: </label>
         <input type="text" name="other" id="other" />
       </div> -->
-        <button class="flex-center" v-on:click="search">Search</button>
+        <hr />
+        <div class="FakeBtn flex-center">
+          <button class="flex-center" v-on:click="search">Search</button>
+
+          <div class="checkBoxs fakeNews flex-allcenter">
+            <div>
+              <input
+                class="styled-checkbox"
+                id="fakeNews"
+                type="checkbox"
+                v-model="fakeNews.checked"
+                name="alsoSearchfor"
+              />
+              <label for="fakeNews">Show only fake news alert</label>
+            </div>
+          </div>
+        </div>
       </div>
 
       <hr />
@@ -79,13 +134,23 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 // @ is an alias to /src
 
 export default {
   name: "Home",
   setup() {
     let REDIRECT_URL = ref("");
+    let covidstats = ref({});
+
+    onBeforeMount(async () => {
+      await covidAPI();
+    });
+
+    let fakeNews = {
+      keywords: ["Fake", "Fakealert", "Fakelead", "Fakenews"],
+      checked: false,
+    };
 
     let checkBox = {
       Beds: {
@@ -161,15 +226,40 @@ export default {
         checked: true,
       },
     };
+    async function covidAPI() {
+      let url = "https://api.covid19api.com/summary";
+      await fetch(url)
+        .then((res) => res.json())
+        .then((out) => {
+          let data = {
+            Global: out.Global,
+            India: out.Countries[76],
+          };
+          covidstats.value = data;
+          // console.log(covidstats.value);
+        });
+    }
 
     function alsoKeywords() {
       let searchKeywords = [];
+      let FakeNewsKeyw = [];
       let keye = [];
+
+      if (fakeNews.checked) {
+        includeKeywords.verified.checked = false;
+        includeKeywords.unverified.checked = false;
+      }
 
       if (includeKeywords.unverified.checked) {
         let keywrd = includeKeywords.unverified.keywords;
         keywrd.forEach((element) => {
           keye.push(element);
+        });
+      }
+
+      if (fakeNews.checked) {
+        fakeNews.keywords.forEach((element) => {
+          FakeNewsKeyw.push(element);
         });
       }
 
@@ -190,8 +280,13 @@ export default {
       });
       // Mapping keywords in proper format for url for eg: ` -"KEYWORD" `
       keye = keye.map((k) => `-"${k}"`).join("+");
-
-      return `(${searchKeywords.join("+OR+")})+${keye}&f=live`;
+      if (fakeNews.checked) {
+        return `(%23${FakeNewsKeyw.join("+OR+")})+(${searchKeywords.join(
+          "+OR+"
+        )})-filter%3Areplies&src=typed_query&f=live`;
+      } else {
+        return `(${searchKeywords.join("+OR+")})+${keye}&f=live`;
+      }
     }
 
     function search() {
@@ -213,6 +308,7 @@ export default {
 
         REDIRECT_URL.value = `${BASE_URL}${query.value}`;
 
+        // console.log(REDIRECT_URL.value);
         // Open url in different tab
         window.open(REDIRECT_URL.value, "_blank");
       } else {
@@ -224,6 +320,8 @@ export default {
     return {
       checkBox,
       search,
+      covidstats,
+      fakeNews,
       excludeKeywords,
       includeKeywords,
     };
@@ -252,18 +350,52 @@ hr {
   text-align: center;
   font-size: 15px;
   font-weight: bold;
-  background: rgba($primary, 0.5);
+  background: rgba(#00ff88, 0.45);
   font-family: "Roboto Mono", monospace;
   hr {
     background: rgba(0, 0, 0, 0.12);
     margin: 10px 0;
   }
 }
+
+.covid-stats {
+  border-radius: 4px;
+}
+.card {
+  flex-direction: column;
+  p {
+    font-weight: 500;
+    font-family: "Roboto Mono", monospace;
+    b {
+      letter-spacing: -1.5px;
+      font-weight: 700;
+    }
+  }
+}
+.card-top {
+  padding: 8px 24px;
+  background: rgba(#00ff88, 0.4);
+  justify-content: space-between;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  h4 {
+    margin: 4px 0;
+  }
+}
+.card-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  padding: 10px 24px;
+  background: rgba(#fff, 0.8);
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
 section {
   margin: 12px;
   min-height: calc(100vh - 250px);
   max-width: 720px;
-  padding: 50px;
+  padding: 25px 50px;
   h1,
   h4 {
     font-family: "Roboto Mono", monospace;
@@ -295,7 +427,8 @@ section {
   button {
     display: flex;
     overflow: hidden;
-    background: #3dd28d;
+    background: rgba(#0ae47e, 0.6);
+
     margin: 10px 0;
     padding: 10px 28px;
 
@@ -403,10 +536,29 @@ section {
     }
   }
 }
+.fakeNews {
+  margin-left: 28px;
+  width: 100%;
+  div input[type="checkbox"] {
+    & + label:before {
+      background: #00a2ed !important;
+    }
+
+    &:hover + label:before {
+      background: rgba(#00a2ed, 0.7);
+    }
+    &:checked + label:before {
+      background: rgba(#00a2ed, 1);
+    }
+  }
+}
 .ochk {
   grid-template-columns: repeat(2, 1fr) !important;
 }
 @media only screen and (max-width: 600px) {
+  .card-top {
+    flex-direction: column;
+  }
   section {
     padding: 20px;
     input[type="text"] {

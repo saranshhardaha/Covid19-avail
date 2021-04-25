@@ -29,7 +29,7 @@ footer {
   }
 
   img {
-    height:24px;
+    height: 24px;
     filter: invert(1);
   }
 }
@@ -40,7 +40,7 @@ footer {
   font-family: "Roboto Mono", monospace;
   font-size: 14px;
   font-weight: bold;
-  background: rgba($primary, 0.5);
+  background: rgba(#00ff88, 0.4);
 
   a {
     color: #ff0000;

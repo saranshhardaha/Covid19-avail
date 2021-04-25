@@ -35,11 +35,11 @@ body {
   background: #ececee;
 }
 .flex-center {
-  display: flex;
+  display: flex !important;
   justify-content: center;
 }
 .flex-allcenter {
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
 }
