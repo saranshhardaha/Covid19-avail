@@ -1,7 +1,7 @@
 <template>
   <div class="toast-warning">
     If you want to contribute to this project here's the
-    <a href="">👩‍💻Source code</a>
+    <a href="https://github.com/5tupidbrain/Covid19-avail">👩‍💻Source code</a>
   </div>
   <footer class="flex-center">
     <p>Made by <a href="https://github.com/5tupidbrain">5tupidBrain</a></p>

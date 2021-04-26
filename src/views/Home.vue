@@ -539,18 +539,7 @@ section {
 .fakeNews {
   margin-left: 28px;
   width: 100%;
-  div input[type="checkbox"] {
-    & + label:before {
-      background: #00a2ed !important;
-    }
-
-    &:hover + label:before {
-      background: rgba(#00a2ed, 0.7);
-    }
-    &:checked + label:before {
-      background: rgba(#00a2ed, 1);
-    }
-  }
+  
 }
 .ochk {
   grid-template-columns: repeat(2, 1fr) !important;
