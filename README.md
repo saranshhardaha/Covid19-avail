@@ -10,6 +10,17 @@
 ![contributions welcome](https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square) 
 ![Maintenance](https://img.shields.io/maintenance/yes/2021)
 
+## Getting Started
+
+First, run the development server:
+
+```bash
+npm run serve
+```
+
+Open [http://localhost:8080](http://localhost:8080) with your browser to see the result.
+
+You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
 ## Contribution Guidelines ⚙️
 
