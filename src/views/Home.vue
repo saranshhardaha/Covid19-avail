@@ -173,6 +173,10 @@ export default {
         keywords: ["test", "tests", "testing"],
         checked: false,
       },
+      "Amphotericin B": {
+        keywords: ["Amphotericin", "Amphotericin B", "Liposomal Amphotericin"],
+        checked: false,
+      },
       Fabiflu: {
         keywords: ["fabiflu"],
         checked: false,
@@ -539,7 +543,6 @@ section {
 .fakeNews {
   margin-left: 28px;
   width: 100%;
-  
 }
 .ochk {
   grid-template-columns: repeat(2, 1fr) !important;
