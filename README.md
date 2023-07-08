@@ -10,6 +10,9 @@
 ![contributions welcome](https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square) 
 ![Maintenance](https://img.shields.io/maintenance/yes/2021)
 
+## Screenshot
+![Screenshot](https://5tupidbrain.vercel.app/img/coavail.042df0a1.png)
+
 ## Getting Started
 
 First, run the development server:
@@ -20,8 +23,6 @@ npm run serve
 
 Open [http://localhost:8080](http://localhost:8080) with your browser to see the result.
 
-## Screenshot
-![Screenshot](https://5tupidbrain.vercel.app/img/coavail.042df0a1.png)
 
 ## Contribution Guidelines ⚙️
 
